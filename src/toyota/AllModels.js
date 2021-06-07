@@ -1,6 +1,6 @@
 import React from 'react';
 
-class NpAreas extends React.Component{
+class AllModels extends React.Component{
     constructor() {
         super();
         console.log('начато создание компонента')
@@ -13,39 +13,32 @@ class NpAreas extends React.Component{
     }
 
     doRead(){
-        let request = {
-            apiKey: 'f5bf7ccf7d80614557218cf7043569b8',
-            modelName: 'Address',
-            calledMethod: 'getAreas',
-            methodProperties: {}
-        };
+
         fetch(
-
-
-            'https://api.novaposhta.ua/v2.0/json/',
+            'https://www.toyota.nikolaev.ua/ajax/all_model',
             {
-                method: 'POST',
+                method: 'GET',
                 cache: 'no-cache',
+                // mode: 'no-cors',
                 credentials: 'same-origin',
                 headers: {
-                    'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                    // 'Content-Type': 'application/json',
+                    // 'X-Requested-With': 'XMLHttpRequest'
                 },
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer',
-                body: JSON.stringify(request)
-            }
-
-        )
+                // body: JSON.stringify(request)
+            })
             .then(response => response.json())
             .then(items => {
                 this.setState(
                     {
                         isLoaded: true,
-                        items: items.data
+                        items: items
+
                     }
                 )
-                console.log(items.data)
+                console.log(items)
             });
     }
     componentDidMount() {
@@ -67,7 +60,10 @@ class NpAreas extends React.Component{
                 {
                     this.state.items.map(
                         item => (
-                            <li key={item.Ref}>{item.DescriptionRu}</li>
+                            <li key={item.id}>
+                                {item.name}
+                                <img src={'https://www.toyota.nikolaev.ua/storage/' + item.image} alt="car"/>
+                            </li>
                         )
                     )
                 }
@@ -77,8 +73,8 @@ class NpAreas extends React.Component{
     renderErorr(){
         return(
             <div >Error :{this.state.error.message()} </div>
-    )
+        )
     }
 }
 
-export default NpAreas;
+export default AllModels;
