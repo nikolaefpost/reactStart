@@ -1,6 +1,6 @@
 import React from 'react';
 
-class AllModels extends React.Component{
+class AllModels extends React.Component {
     constructor() {
         super();
         console.log('начато создание компонента')
@@ -12,7 +12,7 @@ class AllModels extends React.Component{
         }
     }
 
-    doRead(){
+    doRead() {
 
         fetch(
             'https://www.toyota.nikolaev.ua/ajax/all_model',
@@ -39,23 +39,31 @@ class AllModels extends React.Component{
                     }
                 )
                 console.log(items)
-            });
+            })
+            .catch(err => {
+                    this.setState(
+                        {
+                            error: err
+                        })
+                }
+            );
     }
+
     componentDidMount() {
         this.doRead();
         console.log('я создан и примонтирован')
     }
 
     render() {
-        if(this.state.error) return this.renderErorr()
+        if (this.state.error) return this.renderErorr()
         else if (this.state.isLoaded) return this.renderItems()
         return (
             <div> preloader</div>
         )
     }
 
-    renderItems(){
-        return(
+    renderItems() {
+        return (
             <ul id='areaList'>
                 {
                     this.state.items.map(
@@ -70,9 +78,10 @@ class AllModels extends React.Component{
             </ul>
         )
     }
-    renderErorr(){
-        return(
-            <div >Error :{this.state.error.message()} </div>
+
+    renderErorr() {
+        return (
+            <div>Error :{this.state.error.message()} </div>
         )
     }
 }
