@@ -1,15 +1,32 @@
 import React from 'react';
 
+class WeatherCard extends React.Component{
+
+    render() {
+        return (
+            <li className="col-xs-4 col-sm-4 col-lg-2 text-center pt-2" >
+                <h3 className="h5">{new Date(this.props.hours).getHours()}:00</h3>
+                <p><img src={`http://openweathermap.org/img/wn/${this.props.icon}@2x.png`}
+                        alt="clouds"/>
+                    <br/>
+                    {Math.floor(this.props.temp_min)}° / {Math.floor(this.props.temp_max)}°
+                </p>
+            </li>
+        );
+    }
+}
 
 class Weather extends React.Component {
     constructor() {
         super();
         console.log('начато создание компонента')
 
+        this.timer = null;
         this.state = {
             error: null,
             isLoaded: false,
-            items: []
+            items: [],
+            city: ''
         }
     }
 
@@ -24,12 +41,13 @@ class Weather extends React.Component {
             .then(response => {
                 return response.json();
             })
-            .then(response => {
+            .then(result => {
+                console.log(result)
                 this.setState(
                     {
                         isLoaded: true,
-                        items: response.list
-
+                        items: result.list,
+                        city: result.city.name
                     }
                 )
             })
@@ -43,20 +61,28 @@ class Weather extends React.Component {
     }
 
     componentDidMount() {
+        // this.timer = setInterval(() => this.doRead(), 10000);
         this.doRead();
         console.log('я создан и примонтирован')
+    }
+
+    componentWillUnmount() {
+        // clearInterval(this.timer);
     }
 
     render() {
         if (this.state.error) return this.renderErorr()
         else if (this.state.isLoaded) return this.renderItems()
         return (
-            <div> preloader</div>
+            <div className="d-flex mt-5 justify-content-center">
+                <strong>Loading...</strong>
+                <div className="spinner-border ms-auto ml-5" role="status" aria-hidden="true"></div>
+            </div>
         )
     }
 
     renderItems() {
-        console.log(this.state.items)
+
         return (
             <>
                 <div className="main container">
@@ -65,7 +91,7 @@ class Weather extends React.Component {
                             <div className="col-xs-12 offset-sm-1 col-sm-10  col-lg-8 offset-lg-2  weather-panel">
                                 <div className="row align-items-center">
                                     <div className="col-sm-6 pt-5">
-                                        <h2>Mykolayiv<br/><small>{new Date().toLocaleDateString()}</small></h2>
+                                        <h2>{this.state.city}<br/><small>{new Date().toLocaleDateString()}</small></h2>
                                         <div className="h3">
                                             <img src={`http://openweathermap.org/img/wn/${this.state.items[0].weather[0].icon}@2x.png`}
                                             alt="clouds"/>{this.state.items[0].weather[0].main}
@@ -83,14 +109,7 @@ class Weather extends React.Component {
                                             {
                                                 this.state.items.map(
                                                     item => (
-                                                        <li className="col-xs-4 col-sm-4 col-lg-2 text-center pt-2">
-                                                            <h3 className="h5">{new Date(item.dt*1000).getHours()}:00</h3>
-                                                            <p><img src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                                                                    alt="clouds"/>
-                                                                    <br/>
-                                                                {Math.floor(item.main.temp_min)}° / {Math.floor(item.main.temp_max)}°
-                                                            </p>
-                                                        </li>
+                                                        <WeatherCard key={item.dt} hours={item.dt*1000} icon={item.weather[0].icon} temp_min={item.main.temp_min} temp_max={item.main.temp_max} />
                                                     )
                                                 )
                                             }
