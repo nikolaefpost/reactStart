@@ -62,13 +62,13 @@ class Weather extends React.Component {
     }
 
     componentDidMount() {
-        // this.timer = setInterval(() => this.doRead(), 10000);
-        this.doRead();
+        if (!this.state.isLoaded) this.doRead();
+        this.timer = setInterval(() => this.doRead(), 10000);
         console.log('я создан и примонтирован')
     }
 
     componentWillUnmount() {
-        // clearInterval(this.timer);
+        clearInterval(this.timer);
     }
 
     render() {
