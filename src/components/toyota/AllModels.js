@@ -1,4 +1,5 @@
 import React from 'react';
+import AllModelsItem from "./AllModelsItem";
 
 class AllModels extends React.Component {
     constructor() {
@@ -64,17 +65,16 @@ class AllModels extends React.Component {
 
     renderItems() {
         return (
-            <ul id='areaList'>
-                {
-                    this.state.items.map(
-                        item => (
-                            <li key={item.id}>
-                                {item.name}
-                                <img src={'https://www.toyota.nikolaev.ua/storage/' + item.image} alt="car"/>
-                            </li>
-                        )
+            <ul id='areaList' className='row'>{
+                this.state.items.map(item => (
+                        <li key={item.id} className='col-3 list-group-item' >
+                            <AllModelsItem item={item}></AllModelsItem>
+                        </li>
+
                     )
-                }
+                )
+            }
+
             </ul>
         )
     }
