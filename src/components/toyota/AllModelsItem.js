@@ -101,7 +101,7 @@ export default  class AllModelsItem extends React.Component {
     renderFull() {
         return(
             <div className="card">
-                <img src={"https://www.toyota.nikolaev.ua/storage/" + this.props.item.image} className="card-img-top w-25" alt="..." />
+                <img src={"https://www.toyota.nikolaev.ua/storage/" + this.props.item.image} className="card-img-top " alt="..." />
                 <div className="card-body">
                     <h5 className="card-title">{this.props.item.name}</h5>
                     <div className='row'>
