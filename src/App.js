@@ -6,6 +6,7 @@ import NpAreas from "./components/newpost/npAreas";
 import Weather from "./components/weather/weather";
 import Clock from "./components/Clock/clock";
 import AllModels from "./components/toyota/AllModels";
+import Sales from "./components/Sales/sales";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
         <main className="main_weather">
             {/*<AllModels></AllModels>*/}
             <AllModels></AllModels>
-            <Clock></Clock>
+            <Sales/>
         </main>
     </div>
   );
